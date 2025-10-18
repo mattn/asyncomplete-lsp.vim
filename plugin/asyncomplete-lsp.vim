@@ -112,8 +112,9 @@ function! s:handle_completion(server, position, opt, ctx, bufnr, data) abort
     let l:kwlen = len(l:kw)
     let l:startcol = l:col - l:kwlen
     let l:startcol = min([l:startcol, get(l:completion_result, 'startcol', l:startcol)])
+    let l:always = has_key(lsp#get_server_capabilities(l:server), 'inlineCompletionProvider')
 
-    call asyncomplete#complete(a:opt['name'], a:ctx, l:startcol, l:completion_result['items'], l:completion_result['incomplete'])
+    call asyncomplete#complete(a:opt['name'], a:ctx, l:startcol, l:completion_result['items'], l:completion_result['incomplete'] || l:always)
 endfunction
 
 function! s:handle_inline_completion(server, position, opt, ctx, bufnr, data) abort
